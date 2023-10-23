@@ -1,0 +1,33 @@
+<!-- user.html -->
+{% extends 'index.html' %}
+
+{% block content %}
+  <h1>User Profile</h1>
+  <p>Username: {{ user.username }}</p>
+  <p>Email: {{ user.email }}</p>
+  <p>First Name: {{ user.first_name }}</p>
+  <p>Last Name: {{ user.last_name }}</p>
+
+  <h2>Feedback</h2>
+  <ul>
+    {% for feedback in user.feedback %}
+      <li>
+        <p>{{ feedback.title }}</p>
+        <p>{{ feedback.content }}</p>
+        <form method="GET" action="{{ url_for('edit_feedback', feedback_id=feedback.id, username=user.username) }}">
+          <button type="submit" class="btn btn-primary">Edit Feedback</button>
+        </form>
+        <form method="POST" action="{{ url_for('delete_feedback', feedback_id=feedback.id) }}">
+          <button type="submit" class="btn btn-danger">Delete Feedback</button>
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+  <a href="{{ url_for('add_feedback', username=user.username) }}" class="btn btn-success">Add Feedback</a>
+
+  <form method="POST" action="{{ url_for('delete_user', username=user.username) }}">
+    <button type="submit" class="btn btn-danger">Delete Account</button>
+  </form>
+
+  <a href="{{ url_for('logout') }}" class="btn btn-secondary">Logout</a>
+{% endblock %}
